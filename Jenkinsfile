@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'cypress/included:14.5.4'
-            args '-u root:root --entrypoint=""'
-        }
-    }
+    agent none
 
     parameters {
         choice(
@@ -31,12 +26,24 @@ pipeline {
     stages {
 
         stage('Install dependencies') {
+            agent {
+                docker {
+                    image 'cypress/included:14.5.4'
+                    args '-u root:root --entrypoint=""'
+                }
+            }
             steps {
                 sh 'npm ci'
             }
         }
 
         stage('Run Cypress test') {
+            agent {
+                docker {
+                    image 'cypress/included:14.5.4'
+                    args '-u root:root --entrypoint=""'
+                }
+            }
             steps {
                 script {
                     def specArg = ''
@@ -60,19 +67,29 @@ pipeline {
         }
 
         stage('Generate Mochawesome report') {
+            agent {
+                docker {
+                    image 'cypress/included:14.5.4'
+                    args '-u root:root --entrypoint=""'
+                }
+            }
             steps {
                 sh 'npm run report:merge || true'
                 sh 'npm run report:generate || true'
             }
         }
+
+        stage('Generate Allure report') {
+            agent any
+            steps {
+                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                archiveArtifacts artifacts: 'cypress/reports/**, cypress/screenshots/**, cypress/videos/**, allure-results/**',
+                                  allowEmptyArchive: true
+            }
+        }
     }
 
     post {
-        always {
-            archiveArtifacts artifacts: 'cypress/reports/**, cypress/screenshots/**, cypress/videos/**, allure-results/**',
-                              allowEmptyArchive: true
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
-        }
         failure {
             echo "Le build a échoué (MODE=${params.MODE}, SPEC_FILE=${params.SPEC_FILE})."
         }
