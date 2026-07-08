@@ -8,6 +8,11 @@ pipeline {
 
     parameters {
         choice(
+            name: 'MODE',
+            choices: ['single', 'all', 'jdd', 'pom'],
+            description: 'single = un seul fichier | all = tous les tests | jdd = tests pilotés par données | pom = tests Page Object Model'
+        )
+        choice(
             name: 'SPEC_FILE',
             choices: [
                 'cypress/e2e/login.cy.js',
@@ -19,12 +24,8 @@ pipeline {
                 'cypress/e2e/produit.cy.js',
                 'cypress/e2e/testParcoursProduct.cy.js'
             ],
-            description: 'Fichier de test Cypress à exécuter'
+            description: 'Utilisé uniquement si MODE = single'
         )
-    }
-
-    options {
-        disableConcurrentBuilds()
     }
 
     stages {
@@ -37,7 +38,24 @@ pipeline {
 
         stage('Run Cypress test') {
             steps {
-                sh "npx cypress run --spec ${params.SPEC_FILE}"
+                script {
+                    def specArg = ''
+                    switch (params.MODE) {
+                        case 'single':
+                            specArg = "--spec ${params.SPEC_FILE}"
+                            break
+                        case 'jdd':
+                            specArg = '--spec "cypress/e2e/*Jdd*.cy.js"'
+                            break
+                        case 'pom':
+                            specArg = '--spec "cypress/e2e/*Pom*.cy.js"'
+                            break
+                        case 'all':
+                        default:
+                            specArg = ''
+                    }
+                    sh "npx cypress run ${specArg}"
+                }
             }
         }
 
@@ -53,9 +71,10 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'cypress/reports/**, cypress/screenshots/**, cypress/videos/**, allure-results/**',
                               allowEmptyArchive: true
+            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
         }
         failure {
-            echo "Le test ${params.SPEC_FILE} a échoué."
+            echo "Le build a échoué (MODE=${params.MODE}, SPEC_FILE=${params.SPEC_FILE})."
         }
     }
 }
