@@ -1,0 +1,11 @@
+username,password,result
+standard_user,secret_sauce,success
+invalid_user,secret_sauce,failure
+standard_user,secret_sauce,success
+Mouad,secret_sauce,failure
+standard_user,secret_sauce,success
+,,failure
+standard_user,secret_sauce,success
+knownFailure,secret_sauce,failure
+standard_user,secret_sauce,success
+lastOne,secret_sauce,failure

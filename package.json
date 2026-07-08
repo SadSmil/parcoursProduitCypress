@@ -1,0 +1,30 @@
+{
+  "name": "projet1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "report:merge": "mochawesome-merge cypress/reports/mochawesome/*.json > cypress/reports/report.json",
+    "report:generate": "marge cypress/reports/report.json -f report -o cypress/reports"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@cypress/grep": "^5.0.0",
+    "@shelex/cypress-allure-plugin": "^2.41.2",
+    "allure-commandline": "^2.43.0",
+    "allure-cypress": "^3.10.2",
+    "csvtojson": "^2.0.14",
+    "cypress": "^14.5.4",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^4.4.1",
+    "mochawesome-report-generator": "^6.3.2"
+  },
+  "dependencies": {
+    "papaparse": "^5.5.4"
+  }
+}

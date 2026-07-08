@@ -1,0 +1,52 @@
+[
+  {
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "result": "success"
+  },
+  {
+    "username": "invalid_user",
+    "password": "secret_sauce",
+    "result": "failure"
+  },
+  {
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "result": "success"
+  },
+  {
+    "username": "Mouad",
+    "password": "secret_sauce",
+    "result": "failure"
+  },
+  {
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "result": "success"
+  },
+  {
+    "username": "",
+    "password": "",
+    "result": "failure"
+  },
+  {
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "result": "success"
+  },
+  {
+    "username": "knownFailure",
+    "password": "secret_sauce",
+    "result": "failure"
+  },
+  {
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "result": "success"
+  },
+  {
+    "username": "lastOne",
+    "password": "secret_sauce",
+    "result": "failure"
+  }
+]
