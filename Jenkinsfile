@@ -21,15 +21,9 @@ pipeline {
             ],
             description: 'Fichier de test Cypress à exécuter'
         )
-        choice(
-            name: 'BRANCH',
-            choices: ['main', 'bakri'],
-            description: 'Branche Git à builder'
-        )
     }
 
     options {
-        timestamps()
         disableConcurrentBuilds()
     }
 
@@ -37,9 +31,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: "${params.BRANCH}",
-                    url: 'https://github.com/SadSmil/parcoursProduitCypress.git',
-                    credentialsId: 'github-creds'
+                git branch: 'main',
+                    url: 'https://github.com/SadSmil/parcoursProduitCypress.git'
             }
         }
 
@@ -69,7 +62,7 @@ pipeline {
                               allowEmptyArchive: true
         }
         failure {
-            echo "Le test ${params.SPEC_FILE} a échoué sur la branche ${params.BRANCH}."
+            echo "Le test ${params.SPEC_FILE} a échoué."
         }
     }
 }
